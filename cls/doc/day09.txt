@@ -1,0 +1,145 @@
+# day09
+
+동적 질의
+
+	mybatis 는 질의 명령을 만들때 조건을 제시해서
+	동적으로 매번 다른 질의 명령을 만들 수 있다.
+	
+	mybatis에 사용하는 조건 처리 명령
+		
+		1)
+			if
+			
+			형식 ]
+				<if test="조건식">
+					질의명령 구문
+				</if>
+			
+		2)
+			choose, when, otherwise
+			
+			형식 ]
+				<choose>
+					<when test="조건식"></when>
+					<when test="조건식"></when>
+					...
+					<otherwise></otherwise>
+				</choose>
+			
+		3)
+			trim
+			==> 질의명령의 특성상 조건식을 처리할 때
+				첫번째 조건은 그냥 서술하면 되는데
+				두번째 조건부터는 형식이 조금씩 달라진다.
+				이때 무엇이 첫번째가 될 지 모르는 상태에서는 문제가 발생할 수 있다.
+				
+			이런 문제를 해결하기 위한 기능이 trim 이다.
+			
+			형식 ]
+				
+				<trim prefix="WHERE" prefixOverrides="AND | OR">
+				</trim>
+			
+			의미 ]
+				이 문장이 실행되는 순간 맨 앞에 무조건 WHERE를 붙여주세요.
+				( <== prefix="WHERE" )
+				다음 문장 부터는 무조건 AND 나 OR 를 사용하는데
+				첫번째 것만 AND 나 OR를 삭제하세요.
+				( <== prefixOverrides="AND | OR" )
+			
+	예제  1]
+		
+			SELECT
+				bno, title, id, body, wdate, hit
+			FROM
+				board
+			<trim prefix="WHERE" prefixOverrides="AND | OR">
+				<if test="참">  
+					AND isshow = 'Y'
+				</if>
+				<if test="참">
+					AND kind='B'
+				</if>
+			</trim>
+			
+			==> WHERE
+					isshow = 'Y'
+					AND kind = 'B'
+					
+	예제  2]
+		
+		UPDATE
+			board
+		<trim prefix="SET" suffixOverrides=",">
+			<if test=""> ==> true
+				title = #{title},
+			</if>
+			<if test=""> ==> true
+				body = #{body},
+			</if>
+		</trim>
+		
+		==> 참-참 인경우
+			
+			SET
+				title = #{title},
+				body = #{body}
+				
+			참- 거짓인 경우
+			SET
+				title = #{title}
+			
+			거짓-참 인경우
+			
+			SET
+				body = #{body}
+				
+				
+	참고 ]
+		mybatis 에서 사용하는 비교 연산자
+		
+			==  EQ
+			!=	NEQ
+		
+		
+		4) foreach
+			
+			형식 ]
+				<foreach item="변수이름" index="st" collection="데이터"
+					open="?" separator="??" close="???">
+				</foreach>
+				
+			==> ArrayList에 담긴 데이터 갯수만큼 반복하면서
+				특정 질의명령을 만들어주는 명령이다.
+				item=			변수
+				index=			순서를 기억할 변수
+				collection=		실제 데이터가 담긴 변수
+				open=			반복전에 처리할 내용
+				separator=		매번 반복할 때 마다 처리할 내용
+				close=			반복이 끝나면 처리할 내용
+				
+			예 ]
+				SELECT
+					empno, ename, sal, deptno
+				FROM
+					emp
+				WHERE
+					deptno IN (10)
+					deptno IN (10, 20)
+					deptno IN (10, 20, 30)
+					
+			이처럼 IN 다음에 조건식에 사용할 내용이 매번 다른 경우가 발생할 수 있다.
+			
+			컨트롤에 데이터를 list 라는 이름의 ArrayList에 데이터를 기억했다는 가정하에서
+			
+				SELECT
+					empno, ename, sal, deptno
+				FROM
+					emp
+				WHERE
+					deptno IN
+					<foreach item="data" index="index" collection="list"
+											open="(" separator="," close=")">
+							#{data}
+					</foreach>
+		

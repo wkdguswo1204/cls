@@ -1,0 +1,16 @@
+#
+1. 이클립스 압축푼다.
+2. 메이븐 설치한다.
+3. 메이븐 환경변수 설정한다.
+4. 이클립스에서 마켓플레이스에서 sts로 검색해서 스프링 라이브러리를 설치한다.
+5. 프로젝트(Spring Legacy Project)를 만든다.
+6. pom.xml 파일을 열어서 필요한 라이브러리를 추가하고
+	버젼을 수정한다.
+7. web.xml 파일 수정한다.
+8. servlet-context.xml 파일 수정한다.
+9. cls-servlet.xml 파일 만든다.
+10. root-context.xml 파일 수정한다.(디비셋팅, 마이바티스셋팅)
+11. VO를 만든다.
+12. MemberSQL.xml 파일을 만든다.
+13. mybatis-config.xml 파일을 만든다.
+14. 서버 켜고 오류 없는지 확인한다.

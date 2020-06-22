@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+		xml 파일의 구조
+			1. [필수]	첫번째 줄에는 반드시 헤더가 존재해야 한다.
+				<?xml version="1.0" encoding="UTF-8"?>
+			2. [선택]	DTD 파일이나 스키마 파일을 선언한다.
+			3. [필수]	xml 파일은 반드시 단하나의 루트태그를 가져야 한다.
+						루트 태그는 사용하는 스키마나 DTD에서 정해놓은 것만 사용할 수 있다.
+ -->
+ <!DOCTYPE mapper
+ 			PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ 					"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 					
+ <!-- 
+ 		namespace 란?
+ 			이 파일과 같은 질의명령을 작성해 놓은 xml 파일이 여러개 존재 할 경우
+ 			각각의 질의 명령은 구분이 되어야 할 것이고
+ 			그보다 먼저 각각의 문서가 구분이 되어야 할 것이다.
+ 			그때 각 문서를 구분할 목적으로 별칭을 부여하는 방법이
+ 			루트 태그에 namespace 속성을 부여하는 것이다.
+ 			
+ 			***
+ 			각각의 SQL xml 파일마다  namespace값이 모두 달라야 한다.
+ 			
+ 			지정하는 방법
+ 				1. 일반 문자로 지정하는 방법
+ 					==> mSQL
+ 					
+ 				2. 패키지 형태로 지정하는 방법
+ 					==> com.increpas.cls.member.???.????
+  -->
+  
+  <mapper namespace="mSQL">
+  		<sql id="selCNT">
+  			SELECT
+  				count(*) cnt
+  			FROM
+  				member
+  			WHERE
+  				id =
+  		</sql>
+  		
+  		<select id="Login" resultType="int" parameterType="mVO">
+  			<!-- 
+  			SELECT
+  				count(*) cnt
+  			FROM
+  				member
+  			WHERE
+  				id = #{id}
+  			 -->
+  			<include refid="selCNT" /> #{id}
+  				AND pw = #{pw}
+  			
+  		</select>
+  		
+  		<select id="idCount" resultType="int" parameterType="string">
+  			<include refid="selCNT" /> #{id}
+  		</select>
+  		
+  		<select id="nameList" resultType="mVO" >
+  			SELECT
+  				name, mno
+  			FROM
+  				member
+  			WHERE
+  				isshow = 'Y'
+  		</select>
+  		
+  		<select id="mDetail" resultType="mVO" parameterType="string">
+  			SELECT
+  				mno, name, id, mail, tel, 
+  				m.gen gen, m.ano,
+  				joindate jDate, bDate, savename avatar
+  			FROM
+  				member m, avatar a
+  			WHERE
+  				id = #{id}
+  				AND m.ano = a.ano
+  		</select>
+  		
+  		<select id="mInfo" resultType="mVO" parameterType="int">
+  			SELECT
+  				mno, name, id, mail, tel, 
+  				m.gen gen, m.ano,
+  				joindate jDate, bDate, savename avatar
+  			FROM
+  				member m, avatar a
+  			WHERE
+  				mno = #{mno}
+  				AND m.ano = a.ano
+  		</select>
+  		
+  		<select id="getPic" resultType="fVO" parameterType="fVO">
+  			SELECT
+  				pno, oriname, savename
+  			FROM
+  				profile
+  			WHERE
+  				p_mno = #{mno}
+  		</select>
+  		
+  		<select id="getProf" resultType="fVO">
+  			SELECT
+  				pno, p_mno mno, oriname, savename, len
+  			FROM
+  				profile
+  		</select>
+  		
+  		<update id="editMember" parameterType="mVO">
+  			UPDATE
+  				member
+  			<trim prefix="SET" suffixOverrides=",">
+  				<if test="pw neq null">
+	  				pw = #{pw},
+  				</if>
+  				<if test="ano neq 0">
+	  				ano = #{ano},
+  				</if>
+  			</trim>
+  			WHERE
+  				mno = #{mno}
+  		</update>
+  		
+  		<insert id="addMember" parameterType="mVO">
+  			<selectKey keyProperty="mno" resultType="int" order="BEFORE">
+  				SELECT
+  					NVL(MAX(mno) + 1, 1000)
+  				FROM
+  					member
+  			</selectKey>
+  			INSERT INTO
+  				member(mno, id, name, pw, mail, tel, gen, ano)
+  			VALUES(
+  				#{mno}, #{id}, #{name}, #{pw}, #{mail}, #{tel}, #{gen},#{ano}
+  			)
+  		</insert>
+
+
+  		<insert id="addAvt" parameterType="Map">
+  			<selectKey keyProperty="ANO" resultType="int" order="BEFORE">
+  				SELECT
+  					NVL(MAX(ano) + 1, 11)
+  				FROM
+  					avatar
+  			</selectKey>
+  			INSERT INTO
+  				avatar
+  			VALUES(
+  				#{ANO}, #{ORINAME}, #{SAVENAME}, #{GEN}
+  			)
+  		</insert>
+  		
+  		<!-- Profile 데이터 입력 전담 질의 명령 -->
+  		<insert id="addProfile" parameterType="fVO">
+  			<selectKey keyProperty="pno" resultType="int" order="BEFORE">
+  				SELECT
+  					NVL(MAX(pno) + 1, 1001)
+  				FROM
+  					profile
+  			</selectKey>
+  			
+  			INSERT INTO
+  				profile(pno, p_mno, oriname, savename, len)
+  			VALUES(
+  				#{pno}, #{mno}, #{oriname}, #{savename}, #{len}
+  			)
+  		</insert>
+  		
+  		
+  </mapper>
