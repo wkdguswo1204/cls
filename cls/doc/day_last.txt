@@ -1,0 +1,20 @@
+# TRANSACTION 처리
+
+커밋이 이루어지는 시기
+	1. DDL 명령이 입력될 때
+	2. commit 명령이 내려질 때
+	3. 세션이 정상적으로 종료될 경우
+	
+	
+	update - 1
+	select - 2
+	
+	insert - 3
+	
+	컬럼 추가 - 4
+	
+	select - 5
+	
+	x 로 빠져나감
+	
+	

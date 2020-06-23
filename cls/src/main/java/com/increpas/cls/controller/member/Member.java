@@ -249,14 +249,17 @@ public class Member {
 		// 할일
 		// 데이터 체크하고
 //		int cnt = 0 ;
+		/*
 		System.out.println("*****************************");
 		System.out.println(mVO);
 		if(mVO.getPw() != null || mVO.getAno() != 0) {
 			mSrvc.editMember(mVO);
 		}
-		
+		*/
 		fVO.setFile(Arrays.copyOf(fVO.getFile(), fVO.getFile().length - 1));
-		profileSrvc.addProfile(fVO, session);
+		//profileSrvc.addProfile(fVO, session);
+		
+		mSrvc.editInfo(mVO, fVO);
 		RedirectView rv = new RedirectView("/cls/member/memberDetail.cls");
 		mv.setView(rv);
 		

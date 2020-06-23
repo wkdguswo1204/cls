@@ -153,6 +153,7 @@
   		
   		<!-- Profile 데이터 입력 전담 질의 명령 -->
   		<insert id="addProfile" parameterType="fVO">
+  			
   			<selectKey keyProperty="pno" resultType="int" order="BEFORE">
   				SELECT
   					NVL(MAX(pno) + 1, 1001)

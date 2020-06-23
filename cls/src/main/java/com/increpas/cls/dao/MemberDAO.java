@@ -6,12 +6,15 @@ import javax.annotation.Resource;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import com.increpas.cls.vo.*;
 
 public class MemberDAO {
 	@Autowired
 	SqlSessionTemplate sqlSession;
+	@Autowired
+	DataSourceTransactionManager trManager;
 	/*
 	@Resource(name="sqlSession")
 	SqlSessionTemplate sqlSession;

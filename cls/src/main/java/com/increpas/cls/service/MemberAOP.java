@@ -72,7 +72,8 @@ public class MemberAOP {
 		}
 	}
 	
-	@Before("execution(* com.increpas.cls.service.BoardService.writeSrvc(..))")
+	@Before("execution(* com.increpas.cls.service.BoardService.writeSrvc(..)) || " +
+			"execution(* com.increpas.cls.service.BoardService.getDetail(..))")
 	public void loginCk1(JoinPoint join) {
 		Object[] obj = join.getArgs();
 		HttpServletRequest req = (HttpServletRequest) obj[0];

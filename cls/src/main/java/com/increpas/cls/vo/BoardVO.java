@@ -4,10 +4,24 @@ import java.sql.*;
 import java.text.SimpleDateFormat;
 
 public class BoardVO {
-	private int rno, ano, bno, mno, click;
-	private String id, title, body, sdate;
+	private int rno, ano, bno, bino, mno, click;
+	private String id, title, body, name, oriname, savename, sdate;
 	private Date bdate;
 	private Time btime;
+	private ProfileVO fVO;
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public ProfileVO getfVO() {
+		return fVO;
+	}
+	public void setfVO(ProfileVO fVO) {
+		this.fVO = fVO;
+	}
 	public int getRno() {
 		return rno;
 	}
@@ -78,6 +92,25 @@ public class BoardVO {
 		this.btime = btime;
 		setSdate();
 	}
+	public int getBino() {
+		return bino;
+	}
+	public void setBino(int bino) {
+		this.bino = bino;
+	}
+	public String getOriname() {
+		return oriname;
+	}
+	public void setOriname(String oriname) {
+		this.oriname = oriname;
+	}
+	public String getSavename() {
+		return savename;
+	}
+	public void setSavename(String savename) {
+		this.savename = savename;
+	}
+	
 	@Override
 	public String toString() {
 		return "BoardVO [rno=" + rno + ", ano=" + ano + ", bno=" + bno + ", mno=" + mno + ", click=" + click + ", id="

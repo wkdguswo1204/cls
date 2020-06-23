@@ -27,4 +27,16 @@ public class BoardDAO {
 	public List getList(PageUtil page){
 		return sqlSession.selectList("bSQL.getList", page);
 	}
+	
+	public int addList(BoardVO bVO) {
+		return sqlSession.insert("bSQL.addList", bVO);
+	}
+	
+	public int addImg(ProfileVO fVO) {
+		return sqlSession.insert("bSQL.addImg", fVO);
+	}
+	
+	public List getDetail(BoardVO bVO) {
+		return sqlSession.selectList("bSQL.selDetail", bVO);
+	}
 }

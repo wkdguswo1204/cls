@@ -4,6 +4,8 @@ import java.io.*;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -21,7 +23,7 @@ public class FileUtil {
 		==> 같은 이름의 파일이 존재하면 이름을 바꿔주는 함수를 만들자.
 	 */
 	
-	public static MultipartFile[] setArr(MultipartFile[] file) {
+	public MultipartFile[] setArr(MultipartFile[] file) {
 		MultipartFile[] tmp = null;
 		List<MultipartFile> list = (List<MultipartFile>) Arrays.asList(file);
 		for(int i = 0 ; i < file.length ; i++ ) {
@@ -31,7 +33,29 @@ public class FileUtil {
 		return tmp;
 	}
 	
-	public static String rename(String path, String oldName) {
+	public String[] getSaveName(HttpSession session, MultipartFile[] file, String folder) {
+		String[] savename = new String[file.length];
+		String path = session.getServletContext().getRealPath("resources") + "/" + folder;
+		
+		for(int i = 0 ; i < file.length ; i++ ) {
+			String oriname = file[i].getOriginalFilename();
+			if(oriname != null || oriname.length() != 0) {
+				savename[i] = rename(path, oriname);
+			}
+			
+			// 파일 저장
+			try {
+				File refile = new File(path, savename[i]);
+				file[i].transferTo(refile);
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return savename;
+	}
+	
+	public String rename(String path, String oldName) {
 		/*
 			규칙 ]
 				혹시 같은 이름의 파일이 존재하면 _1 의 형태로 숫자를 붙여서 이름을 바꾸는 방식을 사용하자.

@@ -51,7 +51,7 @@
 			var sno = $(this).attr('id');
 			$('#bno').val(sno);
 			$('#nowPage').val('${PAGE.nowPage}');
-			$('#frm').attr('action', '/cls/board/boardDetailProc.cls');
+			$('#frm').attr('action', '/cls/board/boardDetail.cls');
 			$('#frm').submit();
 		});
 	});

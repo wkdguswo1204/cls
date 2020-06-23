@@ -24,6 +24,8 @@ public class ProfileService {
 	// 필요한 클래스 자동 주입 받기
 	@Autowired
 	MemberDAO mDAO;
+	@Autowired
+	FileUtil fileUtil;
 	
 	
 	
@@ -41,7 +43,7 @@ public class ProfileService {
 		for(int i = 0 ; i < file.length ; i++ ) {
 			String oriname = file[i].getOriginalFilename();
 			if(oriname != null || oriname.length() != 0) {
-				savename[i] = FileUtil.rename(path, oriname);
+				savename[i] = fileUtil.rename(path, oriname);
 			}
 			
 			// 파일 저장

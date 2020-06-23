@@ -3,6 +3,8 @@ package com.increpas.cls.service;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.increpas.cls.dao.*;
@@ -16,6 +18,7 @@ import com.increpas.cls.vo.*;
  *
  */
 
+//@EnableTransactionManagement
 public class MemberService {
 	@Autowired
 	MemberDAO mDAO;
@@ -30,5 +33,13 @@ public class MemberService {
 	
 	public void loginCk(HttpServletRequest req, ModelAndView mv) {
 		System.out.println("########## MemberService ");
+	}
+	
+	@Transactional
+	public void editInfo(MemberVO mVO, ProfileVO fVO) {
+		editMember(mVO);
+		System.out.println("### Edit Member");
+		mDAO.insertProfile(fVO);
+		System.out.println("### Add Profile");
 	}
 }

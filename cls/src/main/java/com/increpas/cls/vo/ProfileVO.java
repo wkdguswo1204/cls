@@ -13,10 +13,11 @@ import org.springframework.web.multipart.*;
  *
  */
 public class ProfileVO {
-	private int pno, mno;
+	private int pno, mno, bino, bno;
 	private long len;
-	private String pcode, oriname, savename, dir, sdate;
+	private String pcode, id, oriname, savename, dir, sdate;
 	private Date pdate;
+	private Time ptime;
 	
 	/*
 		업로드된 파일을 기억할 변수는
@@ -38,6 +39,20 @@ public class ProfileVO {
 	}
 	public void setFile(MultipartFile[] file) {
 		this.file = file;
+	}
+	
+	
+	public int getBno() {
+		return bno;
+	}
+	public void setBno(int bno) {
+		this.bno = bno;
+	}
+	public int getBino() {
+		return bino;
+	}
+	public void setBino(int bino) {
+		this.bino = bino;
 	}
 	public int getPno() {
 		return pno;
@@ -63,6 +78,12 @@ public class ProfileVO {
 	public void setPcode(String pcode) {
 		this.pcode = pcode;
 	}
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
 	public String getOriname() {
 		return oriname;
 	}
@@ -85,8 +106,9 @@ public class ProfileVO {
 		return sdate;
 	}
 	public void setSdate() {
-		SimpleDateFormat form = new SimpleDateFormat("yyyy년 MM월 dd일 HH:mm:ss");
-		this.sdate = form.format(pdate);
+		SimpleDateFormat form = new SimpleDateFormat("yyyy년 MM월 dd일 ");
+		SimpleDateFormat form1 = new SimpleDateFormat("HH:mm:ss");
+		this.sdate = form.format(pdate) + form1.format(ptime);
 	}
 	public void setSdate(String sdate) {
 		this.sdate = sdate;
@@ -97,7 +119,13 @@ public class ProfileVO {
 	public void setPdate(Date pdate) {
 		this.pdate = pdate;
 	}
-	
+	public Time getPtime() {
+		return ptime;
+	}
+	public void setPtime(Time ptime) {
+		this.ptime = ptime;
+		setSdate();
+	}
 	@Override
 	public String toString() {
 		return "ProfileVO [pno=" + pno + ", mno=" + mno + ", len=" + len + ", pcode=" + pcode + ", oriname=" + oriname

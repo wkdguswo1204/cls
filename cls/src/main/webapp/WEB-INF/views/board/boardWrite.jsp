@@ -23,12 +23,9 @@
 		var tag1 = '<input class="file w3-input w3-border" type="file" name="file">';
 			
 		$('.box').append(tag1);
-		var el = $('.box > input:file');
-		alert('######## length' + el.length);
 		
 		$('.box > input').last().change(function(){
 			var str = $(this).val();
-			alert('******* ' + str);
 			if(str){
 				addTg();
 			} else {
@@ -41,19 +38,10 @@
 		$('#save').click(function(){
 			// 데이터 유효성 체크
 			$('input:file').last().remove();
-			//$('#frm').submit();
+/* 			$('input:file').last().prop('disabled', true); */
+			$('#frm').submit();
 		});
 		addTg();
-		
-		/*
-		$('.file').click(function(){
-			var str = $(this).val();
-			alert(str);
-			if(!str || str == ''){
-				addTg();
-			}
-		});
-		*/
 	});
 </script>
 </head>
@@ -69,9 +57,7 @@
                     <input class="w3-border-0" type="text" name="title" id="title" placeholder="제목 입력란" style="width: 960px;">
                 </div>
             </div>
-            <div class="w3-row w3-margin-top w3-left-align box">
-                <!-- <input class="file w3-input w3-border" type="file" name="file"> -->
-            </div>
+            <div class="w3-row w3-margin-top w3-left-align box"></div>
             <div class="w3-row w3-margin-top">
                 <div class="w3-card w3-padding w3-margin-bottom">
                     <textarea class="w3-border-0" name="body" id="body" 

@@ -42,4 +42,53 @@
  			WHERE
  				isshow = 'Y'
  		</select>
+ 		
+ 		<select id="selDetail" resultType="bVO" parameterType="bVO">
+ 			SELECT
+ 				bno, title, body, bmno mno, id, bino, oriname, savename, click, board.bdate bdate, board.bdate btime
+ 			FROM
+ 				board, brdimage, member
+ 			WHERE
+ 				bno = #{bno}
+ 				AND bno = bi_bno(+)
+ 				AND bmno = mno
+ 		</select>
+ 		
+ 		<insert id="addList" parameterType="bVO">
+ 			<selectKey keyProperty="bno" resultType="int" order="BEFORE">
+ 				SELECT
+ 					NVL(MAX(bno) + 1, 1001)
+ 				FROM
+ 					board
+ 			</selectKey>
+ 			<!-- 메인 질의 명령 -->
+ 			INSERT INTO
+ 				board(bno, title, body, bmno)
+ 			VALUES(
+ 				#{bno}, #{title}, #{body},
+ 				(
+ 					SELECT
+ 						mno
+ 					FROM
+ 						member
+ 					WHERE
+ 						id = #{id}
+ 				)
+ 			)
+ 		</insert>
+ 		
+ 		<!-- 첨부 파일 저장 질의명령 -->
+ 		<insert id="addImg" parameterType="fVO">
+ 			<selectKey keyProperty="bino" resultType="int" order="BEFORE">
+ 				SELECT
+ 					NVL(MAX(bino) + 1, 1001)
+ 				FROM
+ 					brdimage
+ 			</selectKey>
+ 			INSERT INTO
+ 				brdimage(bino, bi_bno, oriname, savename, len)
+ 			VALUES(
+ 				#{bino}, #{bno}, #{oriname}, #{savename}, #{len}
+ 			)
+ 		</insert>
 	</mapper>
